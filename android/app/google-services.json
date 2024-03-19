@@ -1,0 +1,121 @@
+{
+  "project_info": {
+    "project_number": "66678153075",
+    "project_id": "login-register-crud",
+    "storage_bucket": "login-register-crud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66678153075:android:33b952841a0d7b8093ef06",
+        "android_client_info": {
+          "package_name": "com.example.fibeco_qms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66678153075-oc05l1named8c7bmkoihmdocbcmd5djt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fibeco_qms",
+            "certificate_hash": "e6ff963284954dcc2e6fa782916731893add19b7"
+          }
+        },
+        {
+          "client_id": "66678153075-a2ifdih5gfe6qcajr2fe448qvp950s96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9EGZ91xtj17Chf92H3UjIJlI039dLEo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66678153075-8klndf1vbb9a72av5dco0u0j9nbapedg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66678153075:android:03076e918b52f3b493ef06",
+        "android_client_info": {
+          "package_name": "com.example.fibeco_qms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66678153075-6uscuqfnbrfval84j7r7l6ie58mpndfm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fibeco_qms",
+            "certificate_hash": "e6ff963284954dcc2e6fa782916731893add19b7"
+          }
+        },
+        {
+          "client_id": "66678153075-a2ifdih5gfe6qcajr2fe448qvp950s96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9EGZ91xtj17Chf92H3UjIJlI039dLEo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66678153075-8klndf1vbb9a72av5dco0u0j9nbapedg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66678153075:android:05b26a9ce78ae22e93ef06",
+        "android_client_info": {
+          "package_name": "com.example.fibeco_qms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66678153075-0keaapvkc58ar27j2tfae1cj15bfhg47.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fibeco_qms",
+            "certificate_hash": "e6ff963284954dcc2e6fa782916731893add19b7"
+          }
+        },
+        {
+          "client_id": "66678153075-a2ifdih5gfe6qcajr2fe448qvp950s96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9EGZ91xtj17Chf92H3UjIJlI039dLEo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66678153075-8klndf1vbb9a72av5dco0u0j9nbapedg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
