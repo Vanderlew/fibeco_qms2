@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 class ClerkScreen extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class _ClerkScreenState extends State<ClerkScreen> {
       FirebaseFirestore.instance.collection('customers'); // Reference to the 'customers' collection
 
   String _currentNumber = '';
+  AsyncSnapshot<QuerySnapshot>? _currentSnapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,7 @@ class _ClerkScreenState extends State<ClerkScreen> {
                 ElevatedButton(
                   onPressed: () {
                     // Update the "Now Serving" number to the next number in the queue
-                    _getNextNumber();
+                    _getNextNumber(_currentSnapshot!);
                   },
                   child: Text('Next'),
                 ),
@@ -97,49 +100,87 @@ class _ClerkScreenState extends State<ClerkScreen> {
     );
   }
 
-  void _getNextNumber() {
-    print('Fetching current number...');
-    customersCollection
-        .where('status', isEqualTo: 'Now Serving')
-        .limit(1)
-        .get()
-        .then((querySnapshot) {
-      if (querySnapshot.docs.isNotEmpty) {
-        final servingNumber = querySnapshot.docs.first['number'].toString();
-        setState(() {
-          _currentNumber = servingNumber;
-        });
-        print('Current number fetched: $_currentNumber');
-      } else {
-        setState(() {
-          _currentNumber = 'No customers being served';
-        });
-        print('No customers being served');
-      }
-    }).catchError((error) {
-      print('Error fetching current number: $error');
-    });
+  void _getNextNumber(AsyncSnapshot<QuerySnapshot>? snapshot) {
+    if (snapshot != null && snapshot.hasData) {
+      customersCollection
+          .where('status', isEqualTo: 'Waiting')
+          .orderBy('number')
+          .limit(1)
+          .get()
+          .then((querySnapshot) {
+        if (querySnapshot.docs.isNotEmpty) {
+          final nextNumber = querySnapshot.docs.first['number'].toString();
+          setState(() {
+            _currentNumber = nextNumber;
+            snapshot.data!.docs.removeAt(0); // Remove the current customer from the list
+          });
+          print('Next number fetched: $_currentNumber');
+          customersCollection.doc(querySnapshot.docs.first.id).update({'status': 'Now Serving'});
+          // Notify the customer
+          notifyCustomer(querySnapshot.docs.first as QueryDocumentSnapshot<Map<String, dynamic>>);
+
+
+        } else {
+          setState(() {
+            _currentNumber = 'No customers waiting';
+          });
+          print('No customers waiting');
+        }
+      }).catchError((error) {
+        print('Error fetching next number: $error');
+      });
+    } else {
+      setState(() {
+        _currentNumber = 'No customers being served';
+      });
+      print('No customers being served');
+    }
   }
 
   void serveCustomer(String customerId) async {
-  try {
-    // Update customer status to 'Now Serving'
-    await customersCollection.doc(customerId).update({'status': 'Now Serving'});
-    // Fetch the document snapshot
-    DocumentSnapshot<Map<String, dynamic>> docSnapshot =
-        (await customersCollection.doc(customerId).get()) as DocumentSnapshot<Map<String, dynamic>>;
-    // Retrieve the "number" field from the snapshot data
-    String servingNumber = docSnapshot.data()!['number'].toString();
-    // Update _currentNumber
-    setState(() {
-      _currentNumber = servingNumber;
-    });
-    print('Serving customer with ID: $customerId');
-  } catch (error) {
-    print('Error serving customer: $error');
+    try {
+      // Update customer status to 'Now Serving'
+      await customersCollection.doc(customerId).update({'status': 'Now Serving'});
+      // Fetch the document snapshot
+      DocumentSnapshot<Map<String, dynamic>> docSnapshot =
+          await customersCollection.doc(customerId).get() as DocumentSnapshot<Map<String, dynamic>>;
+      // Retrieve the "number" field from the snapshot data
+      String servingNumber = docSnapshot.data()!['number'].toString();
+      // Update _currentNumber
+      setState(() {
+        _currentNumber = servingNumber;
+      });
+      print('Serving customer with ID: $customerId');
+    } catch (error) {
+      print('Error serving customer: $error');
+    }
   }
+
+  void notifyCustomer(QueryDocumentSnapshot<Map<String, dynamic>> customerDoc) async {
+    final String? email = customerDoc.data()['email'] as String?;
+    final String? contact = customerDoc.data()['contact'] as String?;
+
+
+    if (email != null && contact != null) {
+    // Send email notification
+    final smtpServer = gmail('your@gmail.com', 'yourPassword');
+    final message = Message()
+      ..from = Address('your@gmail.com', 'Your Name')
+      ..recipients.add(email)
+      ..subject = 'Your Turn to Be Served!'
+      ..text = 'Please proceed to the counter for assistance. Your contact: $contact';
+
+    try {
+      await send(message, smtpServer);
+      print('Email notification sent to: $email');
+    } catch (e) {
+      print('Error sending email notification: $e');
+    }
+
+    // Send message notification
+    // Add your message notification implementation here using the contact information
+  } else {
+    print('Email or contact is null');
 }
-
-
-
+}
 }

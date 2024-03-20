@@ -8,7 +8,8 @@ class CustomerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String name = '';
-    String address = '';
+    String email = '';
+    String contact = '';
 
     return Scaffold(
       appBar: AppBar(
@@ -20,12 +21,16 @@ class CustomerScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextField(
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: 'Name:'),
               onChanged: (value) => name = value,
             ),
             TextField(
-              decoration: InputDecoration(labelText: 'Address'),
-              onChanged: (value) => address = value,
+              decoration: InputDecoration(labelText: 'Email:'),
+              onChanged: (value) => email = value,
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: 'Contact Number:'),
+              onChanged: (value) => contact = value,
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -42,7 +47,8 @@ class CustomerScreen extends StatelessWidget {
                   // Add data to Firestore under the 'customers' collection
                   customersCollection.add({
                     'name': name,
-                    'address': address,
+                    'email': email,
+                    'contact': contact,
                     'number': latestNumber, // Add the incremented number to the data
                   }).then((value) {
                     // Data added successfully

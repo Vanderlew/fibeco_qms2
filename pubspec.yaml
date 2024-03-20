@@ -39,6 +39,8 @@ dependencies:
   firebase_database: ^10.4.10
   firebase_core: ^2.27.1
   cloud_firestore: ^4.15.9
+  firebase_auth: ^4.17.9
+  mailer: ^6.1.0
 
 dev_dependencies:
   flutter_test:
